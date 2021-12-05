@@ -1,0 +1,39 @@
+version: '3.5'
+
+services:
+  dev:
+    container_name: lab8-app-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - './react-app:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '3000:3000'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
+  test:
+    container_name: lab8-app-test
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - './react-app:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CI=true
+    command: npm test
+  prod:
+    container_name: lab8-app-prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3001:80'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=production
+  
